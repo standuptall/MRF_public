@@ -20,15 +20,17 @@
             	$_POST["where"] = "ID=".$id;                
             require("Get.php");
         	break;
-    	case "PUT":
+    	case "POST":
     		$obj = Utils::GetObjectFromBody();
-            $_POST["nome"] = $obj->first_name;
-            $_POST["cognome"] = $obj->last_name;
-            $_POST["localita"] = $obj->location;
-            $_POST["immagine"] = $obj->picture;
-            $_POST["telefono"] = $obj->phone;
+            $_POST["nome"] = $obj->nome;
+            $_POST["cognome"] = $obj->cognome;
+            $_POST["localita"] = $obj->localita;
+            $_POST["immagine"] = $obj->immagine;
+            $_POST["telefono"] = $obj->telefono;
             $_POST["idmondo"] = $obj->idmondo;
             $_POST["idsquadra"] = $obj->idsquadra;
+            $_POST["cdlingua"] = $obj->cdlingua;
+            $_POST["cdnazione"] = $obj->cdnazione;
             $_POST["ID"] = $id;
             require("Edit.php");
         	break;

@@ -4,18 +4,28 @@
     $app = FantaApp::GetSingleTon();
     $app->Init(dirname(__file__));
     $id = $app->userInfo["ID"];
-    $obj["elencomessaggi"] = '';
+    $obj["elencomessaggiricevuti"] = '';
     require_once("messagesroute/messagerepo.php");
-    $messages = GetMessages($id);
+    $messages = GetConversations($id);
     foreach($messages as $msg){
-    	$obj["elencomessaggiricevuti"] .= '<a id="a'.$msg->id.'"onclick="onMessageClick(true,this)" href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+    	$obj["elencomessaggiricevuti"] .= '<div class="chat_list" id="'.$msg['idprofilo'].'">
+              <div class="chat_people" >
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>'.$msg['Profilo'].'<span class="chat_date">'.$msg['dataposta'].'</span></h5>
+                  <p>'.$msg['testo'].'</p>
+                </div>
+              </div>
+            </div>';
+        /*
+        '<a id="a'.$msg->id.'"onclick="onMessageClick(true,this)" href="#" class="list-group-item list-group-item-action flex-column align-items-start">
 	  				<div class="d-flex w-100 justify-content-between">
                     	<h5 class="mb-1">'.$msg->oggetto.'</h5>
                     	<small>'.$msg->dataposta.'</small>
                     </div>
                     <p class="mb-1 text-truncate">'.$msg->contenuto.'</p>
                     	<small>'.$msg->mittente.'</small>
-                 </a>';
+                 </a>';*/
     }
     $messages = GetMessagesSent($id);
     $obj["elencomessaggiinviati"] = "";
@@ -29,51 +39,81 @@
                     	<small>'.$msg->mittente.'</small>
                  </a>';
     }
-    $content = '<div class="container bootstrap snippet">
-    <div class="row justify-content-center">
-    	<div class="col-12" >
-          <div class="tab-content">
-            <div class="tab-pane active" id="home">
-                <hr>
-                  <div class="row "style="height: 85vh;  ">
-                  <!--device-->
-                    <div class="d-none d-sm-block col-md-1 col-lg-1">
-                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                          <a class="nav-link active" id="v-ricevuti-tab" data-toggle="pill" href="#v-ricevuti" role="tab" aria-controls="v-ricevuti" aria-selected="true"><i class="fas fa-inbox"></i><small>Ricevuti</small>
-                          <a class="nav-link" id="v-inviati-tab" data-toggle="pill" href="#v-inviati" role="tab" aria-controls="v-inviati" aria-selected="false"><i class="fas fa-sign-out-alt"></i><small>Inviati</small></a>
-                        </div>
-                    </div>
-                    <div class="col-md-11 col-lg-11">
-                    	<div class="row tab-pane fade show active" id="v-ricevuti" role="v-ricevuti" aria-labelledby="v-ricevuti-tab">
-                          <div class="d-none d-sm-block col-md-4 col-lg-4">
-                              <div class="list-group" style="max-height:85vh;overflow:scroll;">
-                                {{elencomessaggiricevuti}}
-                              </div>
-                          </div>
-                          <div class="bg-light col-sm-12 col-md-8 col-lg-8">
-                              <h2 id="title"></h2>
-                              <p class="lead" id="content"></p>
-                          </div>
-                       </div>
-                       <div class="row tab-pane fade" id="v-inviati" role="v-inviati" aria-labelledby="v-inviati-tab">
-                          <div class="d-none d-sm-block col-md-4 col-lg-4">
-                              <div class="list-group" style="max-height:85vh;overflow:scroll;">
-                                {{elencomessaggiinviati}}
-                              </div>
-                          </div>
-                          <div class="bg-light col-sm-12 col-md-8 col-lg-8">
-                              <h2 id="title"></h2>
-                              <p class="lead" id="content"></p>
-                          </div>
-                       </div>
-                     </div>
-                  </div><!--row-->
-                <hr>
-            </div><!--/tab-pane-->
-          </div><!--/tab-content-->
-        </div><!--/col-9-->
-    </div><!--/row-->
-</div>';
+    $content = '<div class="container">
+<h3 class=" text-center">Messaging</h3>
+<div class="messaging">
+      <div class="inbox_msg">
+        <div class="inbox_people">
+          <div class="headind_srch">
+            <div class="recent_heading">
+              <h4>Recent</h4>
+            </div>
+            <div class="srch_bar">
+              <div class="stylish-input-group">
+                <input type="text" class="search-bar"  placeholder="Search" >
+                <span class="input-group-addon">
+                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                </span> </div>
+            </div>
+          </div>
+          <div class="inbox_chat">
+            {{elencomessaggiricevuti}}
+          </div>
+        </div>
+        <div class="mesgs">
+          <div class="msg_history">
+            <div class="incoming_msg">
+              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>Test which is a new approach to have all
+                    solutions</p>
+                  <span class="time_date"> 11:01 AM    |    June 9</span></div>
+              </div>
+            </div>
+            <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>Test which is a new approach to have all
+                  solutions</p>
+                <span class="time_date"> 11:01 AM    |    June 9</span> </div>
+            </div>
+            <div class="incoming_msg">
+              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>Test, which is a new approach to have</p>
+                  <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
+              </div>
+            </div>
+            <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>Apollo University, Delhi, India Test</p>
+                <span class="time_date"> 11:01 AM    |    Today</span> </div>
+            </div>
+            <div class="incoming_msg">
+              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>We work directly with our designers and suppliers,
+                    and sell direct to you, which means quality, exclusive
+                    products, at a price anyone can afford.</p>
+                  <span class="time_date"> 11:01 AM    |    Today</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="type_msg">
+            <div class="input_msg_write">
+              <input type="text" class="write_msg" placeholder="Type a message" />
+              <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>
+      
+    </div></div>';
     $content = Utils::RenderContent($content,$obj);
     echo $content;
     $app->Close();

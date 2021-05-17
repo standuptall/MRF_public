@@ -6,10 +6,16 @@ function onMessageClick(received,msg){
     selectedElement = msg;
 	id = msg.getAttribute("id");
     var idmsg = id.substring(1,id.length  );
-    if (received)
+    if (received){
     	var collection = JSON.parse(msgreceivedcollection);
-    else 
+        //$('#v-ricevuti').css("display", "block");
+        //$('#v-inviati').css("display", "none");
+    }
+    else{ 
     	var collection = JSON.parse(msgsentcollection);
+        //$('#v-inviati').css("display", "block");
+        //$('#v-ricevuti').css("display", "none");
+    }
     var found = collection.find(function(element) {
       return element.id==idmsg;
     });
@@ -19,5 +25,7 @@ function onMessageClick(received,msg){
     con.innerHTML = found.contenuto;
 }
 $( document ).ready(function() {
-    console.log( "ready!" );
+    $('.chat_list').click(function() {
+    	console.log(this.id);
+        });
 });

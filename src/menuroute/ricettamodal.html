@@ -1,0 +1,58 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="ricettamodal">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" data-backdrop="static" data-keyboard="false" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Aggiungi/modifica ricetta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="list-group">
+          <form id="ricettamodalform">
+            <div class="form-group" style="display:none;">
+              <label for="nome">ID</label>
+              <input type="text" class="form-control" name="ID">
+            </div>
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" name="nome" placeholder="Nome ricetta">
+            </div>
+            <div class="form-group">
+              <label for="descrizione">Descrizione</label>
+              <input type="text" class="form-control" name="descrizione" placeholder="Descrizione ricetta">
+            </div>
+            
+            <div class="form-group">
+              <label for="descrizione">Ingrediente 1</label>
+              <input type="text" class="form-control" name="ingrediente1" >
+            </div>            
+            <div class="form-group">
+              <label for="descrizione">Ingrediente 2</label>
+              <input type="text" class="form-control" name="ingrediente2">
+            </div>            
+            <div class="form-group">
+              <label for="descrizione">Ingrediente 3</label>
+              <input type="text" class="form-control" name="ingrediente3">
+            </div>            
+            <div class="form-group">
+              <label for="descrizione">Ingrediente 4</label>
+              <input type="text" class="form-control" name="ingrediente4">
+            </div>
+            <div class="form-group">
+              <label for="descrizione">Ingrediente 5</label>
+              <input type="text" class="form-control" name="ingrediente5">
+            </div>
+            <div class="form-group">
+              <label for="descrizione">Ingrediente 6</label>
+              <input type="text" class="form-control" name="ingrediente6">
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

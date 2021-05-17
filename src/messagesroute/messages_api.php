@@ -36,10 +36,12 @@
             $to = $argument;
             $date = date("Y-m-d H:i:s");
             $oggetto = $obj->subject;
-            $contenuto = $obj->body;            
+            $contenuto = $obj->body;        
             require("Edit.php");
             if (isset($idmondo,$from,$to,$date,$oggetto,$contenuto))
             	SendMessage($idmondo,$from,$to,$date,$oggetto,$contenuto);
+            else
+            	http_response_code(400);
         	break;
     }
 	

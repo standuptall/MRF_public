@@ -1,2 +1,6 @@
 #av_toolbar_regdiv, #av_toolbar_iframe, .av_site, .av-antipixel {display: none!important;} 
 body {top: -40px!important; background-image: url('etc/background.png');}
+
+.wrap {
+	padding: 4em;
+}

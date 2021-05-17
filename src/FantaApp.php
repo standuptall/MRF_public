@@ -6,11 +6,15 @@ class FantaApp  {
       private $isLogged = false;
       public $userInfo = null;
       public $userInfoAgg = null;
-      public $nomeApp = "MRF_Mimmo";
+      public $nomeApp = "SmartMenu";
+      public $pagina = "";
     protected function __construct() {
     	  $this->RestoreLogin();
-          if (!isset($this->userInfo))
+          
+          if (!isset($this->userInfo)){
+          
           	$this->TokenLogin();
+             }
     }
     function LoadCss(){
         //mimmo
@@ -96,13 +100,18 @@ class FantaApp  {
             </body>
             </html>
             ';
-            $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-            $headers .= 'From: <webmaster@cantirsi.com>' . "\r\n";
-            mail($to,$subject,$message,$headers);
+            
+            $this->SendMail($to,$subject,$message);
             return true;
         }
         return false;
+    }
+    function SendMail($to,$subject,$message)
+    {
+    	$headers = "MIME-Version: 1.0" . "\r\n";
+      	$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+      	$headers .= 'From: <webmaster@cantirsi.com>' . "\r\n";
+      	mail($to,$subject,$message,$headers);
     }
     function ValidRegistration($key){
         $esiste  = $this->Sql()->Fetch("Profili","key_confirm='".$key."'");
@@ -126,8 +135,9 @@ class FantaApp  {
             	return false;
         	if(!$donotsetcookie){
               $session = uniqid("fantapp",true);
-              $obj = (object)array("ID"=>$esiste[0]["ID"],"session"=>$session);
-              $this->Sql()->EditRecord("Profili",$obj);
+              $obj = (object)array("nomeutente"=>$esiste[0]["nomeutente"],"data"=>date("Y-m-d h:i:s"),"session"=>$session);
+              $this->Sql()->AddRecord("ProfiliSessioni",$obj);
+             
               $userInfo["session"] = $session;
 			  $agg  = $this->Sql()->Fetch("ProfiliAggiuntiva","ID='".$esiste[0]["ID"]."'");
 			  if (count($agg)==1)
@@ -142,12 +152,6 @@ class FantaApp  {
     }
     function TokenLogin(){
     	$token = Utils::getBearerToken($_SERVER);
-        /*
-        if(!isset($token)){
-            http_response_code(403);
-            exit(0);
-        }
-        */
     	$fields = Utils::checkJwt($token);
         if (isset($fields)){
         	$esiste  = $this->Sql()->Fetch("Profili","email='".$fields->email."'");
@@ -163,34 +167,85 @@ class FantaApp  {
 			if (count($agg)==1)
 				$this->userInfoAgg = $agg[0];
         }
-        /*
-        if (!isset($this->userInfo)){
+        if (!isset($this->userInfo) && !empty($token))
+        {
+        	echo "Invalid token";
             http_response_code(403);
             exit(0);
         }
-        */
     }
     function RestoreLogin(){
     	if(isset($_COOKIE["fanta_session"])){
         	$session = 	$_COOKIE["fanta_session"];
-            $esiste  = $this->Sql()->Fetch("Profili","session='".$session."'");
-            if (count($esiste)==1){
-              $this->isLogged = true;
-              $this->userInfo = $esiste[0];
-              $esiste2  = $this->Sql()->Fetch("ProfiliAggiuntiva","ID='".$esiste[0]["ID"]."'");
-              if (count($esiste2)==1)
-              	$this->userInfoAgg = $esiste2[0];
+            $esistesess  = $this->Sql()->Fetch("ProfiliSessioni","session='".$session."'");
+            if (count($esistesess)==1){
+              $data = new DateTime($esistesess["data"]);
+              $datanow = $date = new DateTime("now",new DateTimeZone("Europe/Rome"));
+              $data->add(new DateInterval('P1M'));
+              if ($data->diff($datanow)>=0)
+              {
+                $esiste  = $this->Sql()->Fetch("Profili","nomeutente='".$esistesess[0]["nomeutente"]."'");
+                $this->isLogged = true;
+                $this->userInfo = $esiste[0];
+                $esiste2  = $this->Sql()->Fetch("ProfiliAggiuntiva","ID='".$esiste[0]["ID"]."'");
+                if (count($esiste2)==1)
+                  $this->userInfoAgg = $esiste2[0];
+              }
+              else {
+            	setcookie("fanta_session", "", time() - 3600);
+                $obj = (object)array("ID"=>$esistesess[0]["ID"]);
+                $this->Sql()->DeleteRecord("ProfiliSessioni",$obj);
+                }
+            }
+            else {
+            	setcookie("fanta_session", "", time() - 3600);
             }
         }
     }
     function UserSignOut(){
     	if(isset($_COOKIE["fanta_session"])){
 			setcookie("fanta_session", " ");
-            $obj = (object)array("ID"=>$userInfo["ID"],"session"=>$userInfo["session"]);
-			$agg  = $this->Sql()->Fetch("ProfiliAggiuntiva","ID='".$esiste[0]["ID"]."'");
-            $this->Sql()->EditRecord("Profili",$obj);
+            $esistesess  = $this->Sql()->Fetch("ProfiliSessioni","session='".$userInfo["session"]."'");
+            $obj = array("ID"=>$esistesess[0]["ID"]);
+			//$agg  = $this->Sql()->Fetch("ProfiliAggiuntiva","ID='".$esiste[0]["ID"]."'");
+            $this->Sql()->DeleteRecord("ProfiliSessioni",$obj);
 			unset($this->userInfo);
 			unset($this->userInfoAgg);
+        }
+    }
+    
+    function FallBackIfNotAuthenticated(){
+    	if (!isset($this->userInfo)){
+        	header("location: /FantaApp");
+            
+        }
+    }
+    function lb($key){
+    	$cdlingua = "EN";
+    	if (!isset($this->userInfo)){
+        }
+        else
+        	$cdlingua = $this->userInfo["cdlingua"];
+        $lb = $this->Sql()->Fetch("Dictionary","cdlingua='".$cdlingua."' AND key_='".$key."'");
+        if (count($lb)>0)
+        	return $lb[0]["value"];
+        return '['.$key.']';
+    }
+    function GetAuth($route){
+    	$lb = $this->Sql()->Fetch("Routes3","route='".$route."'");
+        if (count($lb)>0)
+        	return $lb[0];
+        else{
+        	$obj = (object)array(
+            	"route" => $route,
+                "enabled" => "1",
+                "get" => "1",
+                "post" => "0",
+                "put" => "0",
+                "delete" => "0"
+            );
+            $this->Sql()->AddRecord("Routes3",$obj);
+            return $this->Sql()->Fetch("Routes3","route='".$route."'")[0];
         }
     }
 }
@@ -200,16 +255,22 @@ class FantaBase{
     	$this->showQuery = $sq;
     }
     
-	function Fetch($table,$where){
+	function Fetch($table,$where,$order){
   		$conn = $this->connect();
         $sql = 'SELECT * FROM '.$table.' ';
         if (isset($where)){
         	$sql = $sql . "WHERE " . $where;
         }
+        if (isset($order)){
+        	$sql = $sql . " ORDER BY " . $order;
+        }
 		$result = $conn->query($sql);
         $return = array();
         if ($this->showQuery)
         	echo $sql;
+        if (!$result) {
+        	$this->handleError($conn,$sql);
+        }
         if (mysqli_num_rows($result) > 0) {
             // output data of each row
             while($row = mysqli_fetch_assoc($result)) {
@@ -219,26 +280,55 @@ class FantaBase{
         $conn->close();
         return $return;
     }
+    function Fetch_L($table,$where,$order)
+    {
+    	$app = FantaApp::getSingleTon();
+    	if (strlen($table)>=4)
+        	//if (substr($table, 0, 4)=="Menu")
+            	if (isset($where))
+                	$where .= " AND idutente=".$app->userInfo["menu_idutente"];
+                else	
+                	$where .= " idutente=".$app->userInfo["menu_idutente"];
+        return $this->Fetch($table,$where,$order);
+    }
     function DeleteRecord($table,$where){
     	$conn = $this->connect();
         $sql = "DELETE FROM ".$table." WHERE ".$where;
         if ($this->showQuery)
         	echo $sql;
 		$result = $conn->query($sql);
+        if (!$result) {
+        	$this->handleError($conn,$sql);
+        }
          
         $conn->close();
         return $return;
+    }
+    function DeleteRecord_L($table,$where)
+    {
+    	$app = FantaApp::getSingleTon();
+    	if (strlen($table)>=4)
+        	if (substr($table, 0, 4)=="Menu")
+            	if (isset($where))
+                	$where .= " AND idutente=".$app->userInfo["menu_idutente"];
+                else	
+                	$where .= " idutente=".$app->userInfo["menu_idutente"];
+        return $this->DeleteRecord($table,$where);
     }
     function AddRecord($table,$obj){
     	$conn = $this->connect();
         $sql = "INSERT INTO ".$table."(";
         foreach ($obj as $key => $value) {
-           $sql = $sql . $key . ',';
+           $sql = $sql . '`'.$key .'`'. ',';
        	}
         $sql = substr($sql, 0, -1);
         $sql = $sql . ") VALUES (";
         foreach ($obj as $key => $value) {
-           $sql = $sql . "'". $value . "',";
+           if(gettype($value)=="integer")
+           		$coda = $value;
+           if(gettype($value)=="string")
+           		$coda = "'". $value . "'";
+           $sql = $sql . $coda . ",";
        	}
         $sql = substr($sql, 0, -1);
         $sql = $sql . ")";
@@ -246,9 +336,24 @@ class FantaBase{
         	echo $sql;
 		$result = $conn->query($sql);
          
-        $ID =  $result->insert_id;
+        if (!$result) {
+        	$this->handleError($conn,$sql);
+        }
+        $result = $conn->query("SELECT MAX(ID) as ID FROM ".$table);
+        $row = mysqli_fetch_assoc($result);
+        $ID = $row["ID"];
         $conn->close();
         return $ID;
+    }
+    function AddRecord_L($table,$obj)
+    {
+    	$app = FantaApp::getSingleTon();
+    	if (strlen($table)>=4)
+        {
+          $obj["idutente"] = $app->userInfo["menu_idutente"];
+          $obj["datains"] = date("Y-m-d h:i:s");
+        }
+        return $this->AddRecord($table,$obj);
     }
     function EditRecord($table,$obj){
     	$conn = $this->connect();
@@ -256,17 +361,46 @@ class FantaBase{
         unset($obj->ID);
         $sql = "UPDATE ".$table." SET ";
         foreach ($obj as $key => $value) {
-           $sql = $sql . $key . "= '".$value."',";
+           if(gettype($value)=="integer")
+           		$coda = $value;
+           if(gettype($value)=="string")
+           		$coda = "'". $value . "'";
+           $sql = $sql . $key . "= ".$coda.",";
        	}
         $sql = substr($sql, 0, -1);
         $sql = $sql . " WHERE ID = ".$id;
         if ($this->showQuery)
         	echo $sql;
 		$result = $conn->query($sql);
+        if (!$result) {
+        	$this->handleError($conn,$sql);
+        }
         $conn->close();
     }
+    function handleError($mysqli,$sql)
+    {
+    	echo "MySQL error ".$mysqli->error." Query: ".$sql." ". $msqli->errno;   
+    }
+    function DoQuery($query){
+    	$conn = $this->connect();
+    	if ($this->showQuery)
+        	echo $query;
+		$result = $conn->query($query);
+        if (!$result) {
+        	$this->handleError($conn,$query);
+        }
+        $return = array();
+        if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while($row = mysqli_fetch_assoc($result)) {
+                array_push($return,$row);
+            }
+        } 
+        $conn->close();
+        return $return;
+    }
     function connect() {
-    	$json_config = Utils::loadtext("fantapp.config");
+    	$json_config = Utils::loadtext(ROOTPATH."/fantapp.config");
         $obj = json_decode($json_config);
     	// Create connection
         $conn = new mysqli($obj->server, $obj->user, $obj->password,$obj->databasename);

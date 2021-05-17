@@ -1,0 +1,48 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="contabnotemodal">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Aggiungi nuova nota</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id= "contabnotemodalform">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Data</label>
+            <input type="text" class="form-control" name="data" placeholder="Data">
+          </div>          
+          <div class="form-group">
+            <label for="exampleInputEmail1">Descrizione</label>
+            <input type="text" class="form-control" name="descrizione" placeholder="Descrizione">
+          </div>          
+          <div class="form-group">
+            <label for="exampleInputEmail1">Località</label>
+            <input type="text" class="form-control" name="localita" placeholder="Località">
+          </div>          
+          <div class="form-group">
+            <label for="exampleInputEmail1">Importo</label>
+            <input type="number" step="0.01" class="form-control" name="importo" placeholder="Importo">
+          </div>          
+          <div class="form-group">
+            <label for="exampleInputEmail1">Tipo spesa</label>
+            <input type="text" class="form-control" name="tipospesa" placeholder="Tipo Spesa">
+          </div>          
+          <div class="form-group">
+            <label for="exampleInputEmail1">Da contabilizzare</label>
+            <input type="text" class="form-control" name="dacontab" placeholder="0">
+          </div>          
+          <div class="form-group">
+            <label for="exampleInputEmail1">Debitore</label>
+            <input type="text" class="form-control" name="debitore" placeholder="Debitore">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" data-target="#contabnotemodal" data-title="submit" data-dismiss="modal" onclick="">Salva</button>
+        <button type="button" class="btn btn-secondary" data-target="#contabnotemodal" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>

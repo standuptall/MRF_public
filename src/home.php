@@ -4,16 +4,16 @@
 	$App = FantaApp::getSingleTon();
     $App->Init();
     echo '<div class="page-header" data-parallax="true" style="
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center; background-image: url(\'./etc/landing.jpg\');">
-    <div class="filter"></div>
-    <div class="container">
+  background-repeat: no-repeat; height:120vh;
+background-image: url(\'./etc/landing.jpg\');
+    background-position: bottom;">
+    <div class="container " style="padding-top: 30vh;">
         <div class="motto text-center text-light">
-            <h1>Fantacalcio</h1>
-            <h3>Idea bellissima da sviluppare</h3>
+            <h1>SmartMenu</h1>
+            <blockquote class="blockquote text-center">Pianifica. Gestisci.
+            <h3>Ispira. <span class="lead">Inventa.</span>.</blockquote>
             <br />
-            <a href="/FantaApp/fantacalcio" class="btn btn-outline-light btn-round">Vai</a>
+            <a href="/FantaApp/menu" class="btn btn-outline-light btn-round">Vai al menu</a>
         </div>
     </div>
 </div>

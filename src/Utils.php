@@ -1,7 +1,8 @@
 <?php
+define('ROOTPATH', __DIR__);
 class Utils {
 	public static function ploatTable($array,$header,$settings){
-		echo '<div class="container vh-100">';
+		echo '<div class="container vh-100"><div style="overflow-x:scroll">';
         if (isset($settings->add)){
         	if (gettype($settings->add)=='boolean')
               echo '
@@ -10,7 +11,7 @@ class Utils {
              else
              	echo $settings->add;
         }
-        echo '		<table class="table table-light">
+        echo '		<table class="table table table-striped table-bordered table-primary responsive" id="example">
         				<thead><tr>';
         if (isset($settings->edit) || isset($settings->delete)){
         	echo '
@@ -24,11 +25,16 @@ class Utils {
     	foreach($array as $obj){
         	Utils::ploatRow($obj,$header,$settings);
         }
-        echo '</tbody></table></div>';
+        echo '</tbody></table></div></div>';
     }
     public static function ploatRow($row,$header,$settings){
-    	echo '<tr>';
-        if (isset($settings->edit) || isset($settings->delete)){
+    	echo '<tr id="'.$row["ID"].'" ';
+        if (isset($settings->editfullrow)){
+        	$content = str_replace("%ID%",$row["ID"],$settings->editfullrow);
+            echo $content .'style="cursor:pointer;"' ;
+        }
+        echo '>';
+        if (isset($settings->edit) || isset($settings->delete)|| isset($settings->opt1)|| isset($settings->opt2)){
             echo '<td>';
             if (gettype($settings->edit)=='boolean')
             	echo 'Edit ';
@@ -40,6 +46,18 @@ class Utils {
             	echo 'Delete ';
             else{
         		$content = str_replace("%ID%",$row["ID"],$settings->delete);
+            	echo $content;
+            }  
+            if (gettype($settings->opt1)=='boolean')
+            	echo 'Opt1 ';
+            else{
+        		$content = str_replace("%ID%",$row["ID"],$settings->opt1);
+            	echo $content;
+            }  
+            if (gettype($settings->opt2)=='boolean')
+            	echo 'Opt2 ';
+            else{
+        		$content = str_replace("%ID%",$row["ID"],$settings->opt2);
             	echo $content;
             }
             echo '</td>';
@@ -72,7 +90,7 @@ class Utils {
         }
     }
     function getJwt($fields = array()) { 
-    	$json_config = Utils::loadtext("fantapp.config");
+    	$json_config = Utils::loadtext(ROOTPATH."/fantapp.config");
         $obj = json_decode($json_config);
     	$secretkey = $obj->tokenSecret;
         $encoded_header = base64_encode('{"alg": "HS256","typ": "JWT"}'); 
@@ -83,7 +101,7 @@ class Utils {
         return $jwt_token; 
     }
     function checkJwt($token = NULL) { 
-    	$json_config = Utils::loadtext("fantapp.config");
+    	$json_config = Utils::loadtext(ROOTPATH."/fantapp.config");
         $obj = json_decode($json_config);
     	$secretkey = $obj->tokenSecret;
         $jwt_values = explode('.', $token); 
@@ -97,9 +115,9 @@ class Utils {
         $resultedsignature = base64_encode(hash_hmac('sha256', $recievedHeaderAndPayload, $secretkey, true));
         if ($resultedsignature == $recieved_signature) 
             return($objpay);
-        else 
+        else
             return(NULL); 
-    }  
+    }
     function getAuthorizationHeader($server){
         $headers = null;
         if (isset($server['Authorization'])) {
@@ -134,10 +152,17 @@ class Utils {
         }
         return $obj;
     }
-    function RenderContent($content,$obj) {
+    function RenderContent($content,$obj,$app) {
     	$ciao  = $content;
     	foreach($obj as $campo=>$valore){
         	$ciao = str_replace("{{".$campo."}}",$valore,$ciao);
+        }
+    	//render dictionary words
+        preg_match_all('/\[\[(.*?)\]\]/', $ciao, $matches,PREG_OFFSET_CAPTURE);
+        foreach($matches[0] as $match){
+        	$lb = substr($match[0],2,strlen($match[0])-4);
+            
+        	$ciao = str_replace($match[0],$app->lb($lb),$ciao);
         }
         return $ciao;
     }

@@ -8,8 +8,8 @@
 		$tabella = Utils::GetTabellaMondo($app,"Posta");
         Utils::RequestAuthorization($app);
         $newobj = array("idmondo"=>$idmondo,
-        				"idprofilo"=>$from,
-        				"idprofiloda"=>$to,
+        				"idprofilo"=>$to,
+        				"idprofiloda"=>$from,
         				"dataposta"=>$date,
         				"oggetto"=>$oggetto,
         				"contenuto"=>$contenuto);
