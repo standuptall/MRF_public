@@ -1,0 +1,27 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="ricettalistmodal">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" data-backdrop="static" data-keyboard="false" role="document">
+    <div class="modal-content bg-danger">
+      <div class="modal-header">
+        <h5 class="modal-title">Ricette</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	
+        <div class="form-inline my-2 my-lg-0 w-100">
+          <input class="form-control mr-sm-2" type="search" placeholder="Cerca" onkeyup="SearchTerms()"  style="width:23rem">
+          <button class="btn btn-outline-success my-2 my-sm-0" onclick="SearchTerms()">Search</button>
+        </div>
+        <div class="list-group ricetta-list">
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ricettamodal">Aggiungi nuova...</button>
+      	<button type="button" class="btn btn-warning" data-toggle="modal" onclick="ModificaRicetta()">Modifica selezionata</button>
+      	<button type="button" class="btn btn-info" data-dismiss="modal" onclick="ScegliRicetta()">Scegli selezionata</button>
+      </div>
+    </div>
+  </div>
+</div>

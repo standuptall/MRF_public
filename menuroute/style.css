@@ -1,0 +1,95 @@
+.header {
+	width:100%;
+    height: 50px;
+  	background-color: #004d00;
+}
+.action-link {
+	margin-right: 0.5em;
+}
+.headeritemwrap {
+	margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    height: 100%;
+    float: none;
+    display: flex;
+justify-content: center;
+}
+.headeritem{
+    float: left;
+	width: 200px;
+    height: auto;
+    margin: 0 10px;
+}
+.item{
+	display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+.container{
+	padding: 2em;
+    padding-top : 4em;
+}
+.table{
+	border: 2px solid;
+}
+.tableheader{
+	background-color: #a8e892;
+    height:70px;
+}
+.tablerow{
+	border: 1px solid;
+}
+.tableheaderitem{
+	font-style: bold;
+    padding: 20px;
+    float: left;
+}
+.header-navigation {
+    background-color: #809fff;
+    font-size: 2em;
+    text-align: center;
+    display: block;
+}
+.no-center {
+    text-align: left!important;
+}
+.green
+{
+	background-color: #3bb300;
+}
+.yellow 
+{
+	background-color: #ffff1a;
+}
+.red 
+{
+	background-color: #cc0000;
+}
+.ricetta
+{
+	cursor: pointer;
+}
+.ingredienti
+{
+	cursor: pointer;
+}
+.ricetta-des
+{
+	cursor: pointer;
+}
+
+.delete-button 
+{
+	margin-right: 0px;
+    float: right;
+}
+.form-control-number 
+{
+	width: 5rem;
+}
+h5{
+font-size: 0.8rem;
+}

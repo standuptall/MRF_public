@@ -1,0 +1,41 @@
+<div class="container">
+	<hr>
+    <div class="shadow-lg p-3 mb-5 bg-light rounded">
+      <div class="row">
+          <div class="col-md-3"><!--left col-->
+          <img class="d-none d-sm-block" src="{{immagine}}" style="width:100%">
+          <img class="d-block d-sm-none ml-auto mr-auto"src="{{immagine}}" style="width:50%">
+            <h1 class="display-4 text-center" id="nomeutente"><small>{{nomeutente}}</small></h1>
+          </div>
+          <div class="col-md-7">
+            <h1 class="display-4">{{nome}} {{cognome}}</h1>
+            <p class="lead"></p>
+            <hr class="my-4">
+            <div class="row">
+              <div class="col-md-6 d-none d-md-block">
+                <ul class="list-group list-group-flush">
+                  <p class=" bg-light">[[paese]]</p>
+                  <p class=" bg-light">[[localita]]</p>
+                  <p class="bg-light">[[email]]</p>
+                  <p class="bg-light">[[mondo]]</p>
+                  <p class="bg-light">[[squadra]]</p>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                  <p class="bg-transparent">{{paese}}</p>
+                  <p class="bg-transparent">{{localita}}</p>
+                  <p class="bg-transparent">{{email}}</p>
+                  <p class="bg-transparent">{{mondo}}</p>
+                  <p class="bg-transparent">{{squadra}}</p>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+          	<button  class="btn btn-secondary" data-toggle="modal" data-target="#sendmessagemodal"><i class="far fa-envelope"></i></button>
+          </div>
+       </div><!--/row-->
+    </div>
+</div>
+                                                  
