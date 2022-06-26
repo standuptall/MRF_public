@@ -40,7 +40,7 @@ function AddRifornimento(){
       });
     });
     var today = new Date();
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var date = today.getFullYear()+'-'+("0" + (today.getMonth()+1)).slice(-2)+'-'+today.getDate();
     $('input[name$="data"]').val(date);
     $('#rifornimentimodal').modal('show');
 }
@@ -153,6 +153,47 @@ function SetAsLast(id,event){
             }
           });
 }
+
+function DownloadExcel(){
+	$.ajax({
+        	type: "GET",
+            url: "/FantaApp/api/rifornimenti?excel=1",
+            processData: false,
+            contentType: false,
+	     	success: function(msg)
+            {
+              var obj = JSON.parse(msg);
+              var str = "";
+              var first = obj.data[0];
+              for (const property in first) {
+                str += `${property};`;
+              }
+              str += "\r\n";
+              str += obj.data.map(i=>{
+              		var rrw = "";
+              		for (const property in i) {
+                      rrw += `${i[property]};`;
+                    }
+              		rrw += "\r\n";
+                    return rrw;
+              	});
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(str));
+                element.setAttribute('download', "rifornimenti.csv");
+
+                element.style.display = 'none';
+                document.body.appendChild(element);
+
+                element.click();
+
+                document.body.removeChild(element);
+            },
+            error: function(err)
+            {
+            	handle(err);
+            }
+          });
+}
 $(document).ready(function(){
 	//-------------------------CHILOMETRI
 	$.ajax({
@@ -208,6 +249,21 @@ $(document).ready(function(){
       success: function(msg)
       {
         $('.costomedio').html(msg+" €/100Km");
+      },
+      error: function(err)
+      {
+        handle(err);
+      }
+    });
+    //-------------------------CHILOMETRI NEL RANGE
+    $.ajax({
+      type: "GET",
+      url: "/FantaApp/api/rifornimenti?kmtotali",
+      processData: false,
+      contentType: false,
+      success: function(msg)
+      {
+        $('.kmtotali').html(msg+" Km");
       },
       error: function(err)
       {

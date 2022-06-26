@@ -4,7 +4,6 @@
 	$App = FantaApp::getSingleTon();
     $App->Init(dirname(__file__));
     
-    
     echo '<section id="container" class="container">
         <h3>The user\'s camera</h3>
         <p>If your platform supports the <strong>getUserMedia</strong> API call, you can try the real-time locating and decoding features.

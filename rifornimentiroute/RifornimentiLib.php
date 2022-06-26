@@ -28,6 +28,19 @@ class RifornimentiLib
         }
         return $ret2;
     }
+    function GetExcel(){
+    	$data = $this->GetRifornimenti(0);
+        $sql = "";
+        foreach ($data as $row)
+        {
+        	foreach ($row as $key => $value) {
+               $sql .= $value.";";
+            }
+            $sql .= "\r\n";
+        }
+        $ret =  (object) array('data' => $data);
+        return $ret;
+    }
     function GetCosto(){
     	$app = FantaApp::GetSingleTon();
         $ret1 = $this->GetRifornimenti(0,true);
@@ -87,6 +100,15 @@ class RifornimentiLib
         $km = $beta * 30;
         return round($km,2);
     }
+    function GetChilometriTotali(){
+    	$app = FantaApp::GetSingleTon();
+        $dates = $app->Sql()->Fetch_L("Rifornimenti","primo=1 or ultimo=1","data");
+        $tac1 = $dates[0]["tachimetro"];
+        $tac2 = $dates[1]["tachimetro"];
+        $max = $tac2>$tac1 ? $tac2 : $tac1;
+        $min = $tac2>$tac1 ? $tac1 : $tac2;
+        return $max - $min;
+    }
     function GetCovarianza(){
     	$seriesx = $this->GetXSeries();
     	$seriesy = $this->GetYSeries();
@@ -141,7 +163,19 @@ class RifornimentiLib
         }
         return $series;
     }
-    
+    function GetStazioni($prov,$region){
+      $url = "https://carburanti.mise.gov.it/OssPrezziSearch/ricerca/localita";
+      $ch = curl_init();
+      curl_setopt($ch,CURLOPT_URL, $url);
+      curl_setopt($ch,CURLOPT_POST, true);
+      curl_setopt($ch, CURLOPT_POSTFIELDS,
+                  "province="+$prov+"&region"+$region);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+      curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
+      //execute post
+      $result = curl_exec($ch);
+      var_dump(curl_error($ch));
+    }
     function SetFirst($id){
     	$app = FantaApp::GetSingleTon();
         $ret1 = $app->Sql()->DoQuery("UPDATE Rifornimenti SET primo = 0");
@@ -160,6 +194,7 @@ class RifornimentiLib
         }
         return ($a["ingredientimancanti"] < $b["ingredientimancanti"]) ? -1 : 1;
     }
+    
 }
 ?>
 

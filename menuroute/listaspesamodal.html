@@ -8,14 +8,33 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="form-inline my-2 my-lg-0 w-100">
-          <input class="form-control mr-sm-2" type="search" placeholder="Ingrediente"  style="width:23rem">
-          <button class="btn btn-outline-success my-2 my-sm-0" onclick="AggiungiListaSpesa()" id="insert">Aggiungi</button>
-          <button class="btn btn-outline-success my-2 my-sm-0" onclick="SalvaListaInDispensa()" id="insert">Salva in dispensa</button>
+      <div class="form-inline my-2 my-lg-0 w-100">
+        <input class="form-control mr-sm-2" type="search" placeholder="Ingrediente"  style="width:23rem">
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="AggiungiListaSpesa()" id="insert">Aggiungi</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="SalvaListaInDispensa()" id="insert">Salva in dispensa</button>
+      </div>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="food-tab" data-toggle="tab" href="#food" role="tab" aria-controls="food" aria-selected="true">Food</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="hygiene-tab" data-toggle="tab" href="#hygiene" role="tab" aria-controls="hygiene" aria-selected="false">Hygiene</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="food" role="tabpanel" aria-labelledby="food-tab">
+          <div class="list-group listaspesa-list-food" data-toggle="food">
+
+          </div>
         </div>
-        <div class="list-group listaspesa-list" data-toggle="items">
-          
+        <div class="tab-pane fade" id="hygiene" role="tabpanel" aria-labelledby="hygiene-tab">
+          <div class="list-group listaspesa-list-hygiene" data-toggle="hygiene">
+
+          </div>
         </div>
+      </div>
+        
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary costo" data-container="body" data-toggle="popover" data-placement="top" data-content="">

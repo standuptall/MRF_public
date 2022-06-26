@@ -9,6 +9,7 @@
     $lbContabNote = $app->lb("contabnote");
     $lbMenu = $app->lb("menu");
     $lbRifornimenti = $app->lb("rifornimenti");
+    $lbCast = $app->lb("cast");
         
     	$content = '
     <header class="navbar navbar-expand-lg navbar-expand-md navbar-dark bg-primary sticky-top">
@@ -35,6 +36,9 @@
           </li>
           <li class="nav-item '.($app->pagina=="rifornimenti" ? $active : "").'">
             <a class="nav-link" href="/FantaApp/rifornimenti">'.$lbRifornimenti.'</a>
+          </li>
+          <li class="nav-item '.($app->pagina=="cast" ? $active : "").'">
+            <a class="nav-link" href="/FantaApp/cast">'.$lbCast.'</a>
           </li>
         </ul>';
         if (!isset($user))

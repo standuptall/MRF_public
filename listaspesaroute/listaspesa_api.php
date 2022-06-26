@@ -6,8 +6,24 @@
     $verb = $_SERVER["REQUEST_METHOD"];
     switch($verb){
     	case "GET":
-        	$ret1 = $app->Sql()->Fetch_L("Menu_ListaSpesa","1","ingrediente");
-        	echo json_encode($ret1);
+        	if (!isset($app->userInfo["menu_idutente"]))
+          		$app->userInfo["menu_idutente"] = ($_GET["id_utente"]);
+            if (isset($_GET["frequent"]))
+            	$ret1 = $app->Sql()->Fetch_L("Menu_IngredientiFrequenti","1","ingrediente");
+            else
+        		$ret1 = $app->Sql()->Fetch_L("Menu_ListaSpesa","1","ingrediente");
+            $ret2 = array();
+            foreach($ret1 as $ingr)
+            {
+             	$nome = strtolower($ingr["ingrediente"]);
+                $disp = $app->Sql()->Fetch_L("Menu_IngredientiCategoria","ingrediente = '".$nome."'");
+                if ($disp){
+                  $ingr["categoria"] = $disp[0]["categoria"];
+                }
+                else $ingr["categoria"] = 1;
+                array_push($ret2,$ingr);
+            }
+        	echo json_encode($ret2);
         	break;
     	case "POST":
     	case "PUT":
@@ -40,6 +56,8 @@
               	foreach($obj as $single)
                 {
                   $nome  = strtolower($single->ingrediente);
+                  if (!isset($app->userInfo["menu_idutente"]))
+                  	$app->userInfo["menu_idutente"] = $single->id_utente;
                   $ret = $ret1 = $app->Sql()->Fetch_L("Menu_ListaSpesa","ingrediente='".$nome."'");
                   if (count($ret)==0)
                   {

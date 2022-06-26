@@ -124,7 +124,21 @@ switch ($request) {
     case '/FantaApp/barcode' :
     	$app->pagina = "barcode";
         require __DIR__ . '/barcoderoute/barcode.php';
+        break;    
+    case '/FantaApp/api/barcode' :
+        require __DIR__ . '/barcoderoute/barcode_api.php';
         break;
+    case '/FantaApp/cast' :
+    	$app->pagina = "cast";
+        require __DIR__ . '/castroute/cast.php';
+        break;    
+    case '/FantaApp/api/cast' :
+        require __DIR__ . '/castroute/cast_api.php';
+        break;    
+    case '/FantaApp/castnoshadow' :
+    	$app->pagina = "castnoshadow";
+        require __DIR__ . '/castnoshadowroute/castnoshadow.php';
+        break;    
     default :
     	NotFound();
         break;

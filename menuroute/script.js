@@ -518,11 +518,13 @@ function OpenLista(){
       success: function(msg)
       {
         var obj = JSON.parse(msg); 
-        $('.listaspesa-list').html("");
+        $('.listaspesa-list-food').html("");
+        $('.listaspesa-list-hygiene').html("");
         obj.forEach(function(c){			
 		  active = (c.prelevato > 0) ? "active" : "";
-          $('.listaspesa-list').html(	
-            $('.listaspesa-list').html()+"<a class=\"list-group-item list-group-item-action "+active+"\" id=\""+c.ID+"\" onclick=\"SetPrelevato($(this))\" ><span>"+c.ingrediente+"</span><button class=\"btn delete-button\" onclick=\"DeleteFromListaSpesa("+c.ID+")\"><i class=\"fas fa-trash-alt\"></i></button></a>");
+          desinenza = (c.categoria==1) ? "food" : "hygiene";
+          $('.listaspesa-list-'+desinenza).html(	
+            $('.listaspesa-list-'+desinenza).html()+"<a class=\"list-group-item list-group-item-action "+active+"\" id=\""+c.ID+"\" onclick=\"SetPrelevato($(this))\" ><span>"+c.ingrediente+"</span><button class=\"btn delete-button\" onclick=\"DeleteFromListaSpesa("+c.ID+")\"><i class=\"fas fa-trash-alt\"></i></button></a>");
         });
 		$('#listaspesamodal').modal('show');
       },
@@ -548,6 +550,33 @@ function OpenLista(){
             $('.costo').attr("data-content",ingredienti);
         }
         $('.costo').html(msg);
+      },
+      error: function(err)
+      {
+        handle(err);
+      }
+    });
+}
+function OpenListaFrequenti(){
+	var urlx = "/FantaApp/api/listaspesa?frequent=1";
+    $.ajax({
+      type: "GET",
+      url: urlx,
+      data: "",
+      processData: false,
+      contentType: false,
+      success: function(msg)
+      {
+        var obj = JSON.parse(msg); 
+        $('.listaspesa-list-food').html("");
+        $('.listaspesa-list-hygiene').html("");
+        obj.forEach(function(c){			
+		  active = (c.prelevato > 0) ? "active" : "";
+          desinenza = (c.categoria==1) ? "food" : "hygiene";
+          $('.listaspesa-list-'+desinenza).html(	
+            $('.listaspesa-list-'+desinenza).html()+"<a class=\"list-group-item list-group-item-action "+active+"\" id=\""+c.ID+"\" onclick=\"SetPrelevato($(this))\" ><span>"+c.ingrediente+"</span><button class=\"btn delete-button\" onclick=\"DeleteFromListaSpesa("+c.ID+")\"><i class=\"fas fa-trash-alt\"></i></button></a>");
+        });
+		$('#listaspesamodal').modal('show');
       },
       error: function(err)
       {
@@ -795,4 +824,12 @@ function OpenProposte(){
         handle(err);
       }
     });
+}
+function drag(event){
+}
+function drop(event){
+}
+
+function allowDrop(ev) {
+  ev.preventDefault();
 }

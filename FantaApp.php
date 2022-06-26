@@ -142,7 +142,7 @@ class FantaApp  {
 			  $agg  = $this->Sql()->Fetch("ProfiliAggiuntiva","ID='".$esiste[0]["ID"]."'");
 			  if (count($agg)==1)
 				$this->userInfoAgg = $agg[0];
-              setcookie("fanta_session", $session, time() + (86400 * 10));
+              setcookie("fanta_session", $session, time() + (86400 * 30));
             }
             $this->isLogged = true;
             $this->userInfo = $esiste[0];

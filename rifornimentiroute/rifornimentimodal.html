@@ -9,26 +9,41 @@
       </div>
       <div class="modal-body">
         <form id= "rifornimentimodalform">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Data</label>
-            <input type="text" class="form-control" name="data" placeholder="Data">
-          </div>      
-          <div class="form-group">
-            <label for="exampleInputEmail1">Importo</label>
-            <input type="number" step="0.01" class="form-control" name="importo" placeholder="Importo">
-          </div>   
-          <div class="form-group">
-            <label for="tachimetro">Tachimetro</label>
-            <input type="number" step="0.01" class="form-control" name="tachimetro" placeholder="Tachimetro">
-          </div>  
-          <div class="form-group">
-            <label for="costo">Costo</label>
-            <input type="number" step="0.01" class="form-control" name="costo" placeholder="Costo">
-          </div>  
-          <div class="form-group">
-            <label for="residuo">Residuo</label>
-            <input type="number" step="1" class="form-control" name="residuo" placeholder="Residuo">
-          </div>  
+          <div class="row">
+          	<div class="col">
+            	<div class="form-group">
+                	<label for="exampleInputEmail1">Data</label>
+            		<input type="date" class="form-control" name="data" placeholder="Data">
+                </div>
+            </div>
+          	<div class="col">
+            	<div class="form-group">
+                	<label for="exampleInputEmail1">Importo</label>
+            		<input type="number" step="0.01" class="form-control" name="importo" placeholder="Importo">
+                </div>
+            </div>
+          	<div class="col">
+            	<div class="form-group">
+                	<label for="costo">Costo</label>
+            		<input type="number" step="0.01" class="form-control" name="costo" placeholder="Costo">
+                </div>
+            </div>
+          </div> 
+          <div class="row">
+          	<div class="col">
+            	<div class="form-group">
+                  <label for="tachimetro">Tachimetro</label>
+                  <input type="number" step="0.01" class="form-control" name="tachimetro" placeholder="Tachimetro">
+                </div>
+            </div>
+            <div class="col">
+            	<div class="form-group">
+                  <label for="residuo">Residuo</label>
+                  <input type="number" step="1" class="form-control" name="residuo" placeholder="Residuo">
+                </div>  
+            </div>
+          </div>
+              
         </form>
       </div>
       <div class="modal-footer">

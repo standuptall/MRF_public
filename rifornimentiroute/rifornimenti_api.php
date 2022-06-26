@@ -15,7 +15,28 @@
             else if (isset($_GET["costo"]))
             	echo json_encode($lib->GetCosto());
             else if (isset($_GET["costomedio"]))
-            	echo json_encode($lib->GetCostoOgniCentoChilometri());
+            	echo json_encode($lib->GetCostoOgniCentoChilometri());       
+            else if (isset($_GET["kmtotali"]))
+            	echo json_encode($lib->GetChilometriTotali());                
+            else if (isset($_GET["excel"]))
+            	echo json_encode($lib->GetExcel());                          
+            else if (isset($_GET["stazioni"]))
+            	echo json_encode($lib->GetStazioni('PV','19'));             
+            else if (isset($_GET["graph"])){
+            	$x = $lib->GetXSeries();
+            	$y = $lib->GetYSeries();
+                $ret = array();
+                $count = 0;
+                foreach($x as $num)
+                {
+                    $obj = array();
+                    $obj["x"] = $num;
+                    $obj["y"] = $y[$count]; 
+                    array_push($ret, (object)$obj);
+                    $count++;
+                }
+                echo json_encode($ret);
+            }
             else
         		echo json_encode($lib->GetRifornimenti($argument));
             
@@ -29,6 +50,7 @@
             $ingr["costo"] = $obj->costo;     
             $ingr["residuo"] = $obj->residuo;    
             $id = $app->Sql()->AddRecord_L("Rifornimenti",$ingr);
+            echo json_encode($ingr);
         	break;
     	case "PUT":
         	if (isset($_GET["first"]))
@@ -41,7 +63,7 @@
                   exit;
               $ingr = new stdClass();
               $ingr->ID = $argument;    
-              $ingr->data = trim($obj->data);    
+              $ingr->data = str_replace("/","-",trim($obj->data));    
               $ingr->importo = $obj->importo;      
               $ingr->tachimetro = $obj->tachimetro;    
               $ingr->costo = $obj->costo;     

@@ -17,7 +17,7 @@
     $contentprint = '';
     $contentprint .=  '
   <div class="container">
-  <nav class="navbar navbar-expand navbar-light bg-light">
+  <nav class="navbar navbar-expand navbar-light bg-light " style="overflow: auto;">
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item m-1">
@@ -37,6 +37,9 @@
       </li>
       <li class="nav-item m-1">
         <button class="btn btn-success" onclick="OpenProposte()" ><h5 class="fas fa-magic"></h2></button>
+      </li>
+      <li class="nav-item m-1">
+        <button class="btn btn-primary" onclick="OpenListaFrequenti()" ><h5 class="fas fa-shopping-cart"></h2></button>
       </li>
     </ul>
   </div>
@@ -61,7 +64,7 @@
             	<a href=/FantaApp/menu?from={backmonth}><i class="fas fa-chevron-circle-left"></i></a>
             </div>
         	<div class="col-6">
-            	{mese}
+            	{mese} {anno}
             </div>
         	<div class="col-3">
             	<a href=/FantaApp/menu?from={forwardmonth}><i class="fas fa-chevron-circle-right"></i></a>
@@ -98,7 +101,9 @@
     $contentprint = str_replace("{forwardmonth}",$dateforwardmonth->format("Ymd"),$contentprint);
     $contentprint = str_replace("{forwardweek}",$dateforwardweek->format("Ymd"),$contentprint);
     $mese = $date->format("F");
+    $anno = $date->format("Y");
     $contentprint = str_replace("{mese}",$mese,$contentprint);
+    $contentprint = str_replace("{anno}",$anno,$contentprint);
     $contentprint = str_replace("{now}",$date->format("Ymd"),$contentprint);
     
     $dayofweek = $date->format("l");
@@ -167,18 +172,18 @@
             if($PC == "Pranzo")
             	$pranzo = true;
             $contentprint .= '<p class="card-text no-center"><span class="badge badge-primary">'.$PC.'</span>
-            	<span class="'.$pasto->ingredientipresenti.'"><a onclick="EditMenu(\''.$pasto->data.'\')">'.$pasto->nomericetta.'</a></span><button class="btn" onclick="DeleteMeal(\''.$pasto->data.'\','.$PCINT.')"><i class="fas fa-trash-alt"></i></button></p>';
+            	<span class="'.$pasto->ingredientipresenti.'"><a draggable=true ondragstart="drag(event)"  onclick="EditMenu(\''.$pasto->data.'\')">'.$pasto->nomericetta.'</a></span><button class="btn" onclick="DeleteMeal(\''.$pasto->data.'\','.$PCINT.')"><i class="fas fa-trash-alt"></i></button></p>';
           }
           
           if (!$pranzo)
           {  
           	$contentprint .= '<p class="card-text no-center"><span class="badge badge-primary">Pranzo</span>
-            	<span><a onclick="EditMenu(\''.$newdate->format("Y-m-d").'\')">Aggiungi</a></span></p>';
+            	<span ondragover="allowDrop(event)" ondrop="drop(event)" ><a onclick="EditMenu(\''.$newdate->format("Y-m-d").'\')">Aggiungi</a></span></p>';
           }
           if (!$cena)
           {
             $contentprint .= '<p class="card-text no-center"><span class="badge badge-primary">Cena</span>
-            	<span><a onclick="EditMenu(\''.$newdate->format("Y-m-d").'\')">Aggiungi</a></span></p>';
+            	<span ondragover="allowDrop(event)" ondrop="drop(event)" ><a onclick="EditMenu(\''.$newdate->format("Y-m-d").'\')">Aggiungi</a></span></p>';
           }
           $contentprint .= '
         </div></div></div>

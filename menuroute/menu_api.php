@@ -17,8 +17,11 @@
             	echo json_encode($lib->GetProposte());
             else if (isset($_GET["costo"]))
             	echo json_encode($lib->GetCostoStimato($_GET["tipo"]));
-            else 
+            else {
+                if (!isset($app->userInfo["menu_idutente"]))
+                	$app->userInfo["menu_idutente"] = $_GET["idutente"];
         		echo json_encode($lib->GetMealByDay($date));
+                }
         	break;
     	case "POST":
     	case "PUT":

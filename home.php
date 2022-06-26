@@ -13,7 +13,8 @@ background-image: url(\'./etc/landing.jpg\');
             <blockquote class="blockquote text-center">Pianifica. Gestisci.
             <h3>Ispira. <span class="lead">Inventa.</span>.</blockquote>
             <br />
-            <a href="/FantaApp/menu" class="btn btn-outline-light btn-round">Vai al menu</a>
+            <p><a href="/FantaApp/menu" class="btn btn-outline-light btn-round">Vai al menu</a></p>
+            <p><a href="/FantaApp/rifornimenti" class="btn btn-outline-light btn-round">Vai ai rifornimenti</a></p>
         </div>
     </div>
 </div>

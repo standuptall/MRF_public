@@ -1,5 +1,8 @@
 RewriteEngine On
-RewriteRule FantaApp/.* http://cantirsi.altervista.org/FantaApp/index.php
+RewriteRule FantaApp/.* https://cantirsi.altervista.org/FantaApp/index.php
+RewriteRule fantaapp/.* https://cantirsi.altervista.org/FantaApp/index.php
+
+
 
 RewriteEngine On
 RewriteBase /
