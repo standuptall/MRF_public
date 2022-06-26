@@ -1,0 +1,28 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="sendmessagemodal">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">[[inviamessaggio]]</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id= "sendmessagemodalform">
+          <div class="form-group">
+            <label for="exampleInputEmail1">[[oggetto]]</label>
+            <input type="text" class="form-control" name="subject" placeholder="[[inseriscioggetto]]">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">[[testo]]</label>
+            <textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="5"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" data-target="#giocatorimodal" data-title="submit" data-dismiss="modal" onclick="SendMessage(event)">[[salva]]</button>
+        <button type="button" class="btn btn-secondary" data-target="#giocatorimodal" data-dismiss="modal">[[chiudi]]</button>
+      </div>
+    </div>
+  </div>
+</div>

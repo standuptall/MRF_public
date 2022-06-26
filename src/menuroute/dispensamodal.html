@@ -1,0 +1,25 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="dispensamodal">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" data-backdrop="static" data-keyboard="false" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">La mia dispensa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-inline my-2 my-lg-0 w-100">
+          <input class="form-control mr-sm-2" type="search" placeholder="Ingrediente"  style="width:23rem">
+          <button class="btn btn-outline-success my-2 my-sm-0" onclick="AggiungiDispensa()" id="insert">Aggiungi</button>
+          <button class="btn btn-right  my-2 my-sm-0" onclick="OrderDispensa()" id="insert"><i class="fas fa-sort"></i>Ordina per data inserimento</button>
+        </div>
+        <div class="list-group dispensa-list">
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-secondary costo" data-container="body" data-toggle="popover" data-placement="top" data-content="">
+      </div>
+    </div>
+  </div>
+</div>
